@@ -26,12 +26,18 @@ namespace Rasputin.TM
                 Appointment[] appointments = await new AppointmentService().FindUserAppointments(log, tblAppointment, Guid.Parse(userIDString));
                 responseMessage = JsonConvert.SerializeObject(appointments);                
             } else {
-                Guid AppointmentID = Guid.Parse(req.Query["AppointmentID"].ToString());            
-                Appointment Appointment = await new AppointmentService().FindAppointment(log, tblAppointment, AppointmentID);
-                if (Appointment == null) {
-                    return new NotFoundResult();
+                string slotUserIDString = req.Query["SlotUserIDString"].ToString();
+                if (slotUserIDString != null && !slotUserIDString.Equals("")) {
+                    Appointment[] appointments = await new AppointmentService().FindSlotUserAppointments(log, tblAppointment, Guid.Parse(slotUserIDString));
+                    responseMessage = JsonConvert.SerializeObject(appointments);                
+                } else {
+                    Guid AppointmentID = Guid.Parse(req.Query["AppointmentID"].ToString());            
+                    Appointment Appointment = await new AppointmentService().FindAppointment(log, tblAppointment, AppointmentID);
+                    if (Appointment == null) {
+                        return new NotFoundResult();
+                    }
+                    responseMessage = JsonConvert.SerializeObject(Appointment);
                 }
-                responseMessage = JsonConvert.SerializeObject(Appointment);
             }
 
             return new OkObjectResult(responseMessage);

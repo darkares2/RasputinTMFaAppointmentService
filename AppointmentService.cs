@@ -34,6 +34,25 @@ namespace Rasputin.TM {
             }
         }
 
+        public async Task<Appointment[]> FindSlotUserAppointments(ILogger log, CloudTable tblAppointment, Guid slotUserID)
+        {
+            log.LogInformation($"FindUserAppointments by user {slotUserID}");
+            List<Appointment> result = new List<Appointment>();
+            TableQuery<Appointment> query = new TableQuery<Appointment>().Where(TableQuery.GenerateFilterConditionForGuid("SlotUserID", QueryComparisons.Equal, slotUserID));
+            TableContinuationToken continuationToken = null;
+            try {
+                do {
+                var page = await tblAppointment.ExecuteQuerySegmentedAsync(query, continuationToken);
+                continuationToken = page.ContinuationToken;
+                result.AddRange(page.Results);
+                } while(continuationToken != null);
+                return result.OrderBy(x => x.Timeslot).ToArray();
+            } catch(Exception ex) {
+                log.LogWarning(ex, "FindSlotUserAppointments");
+                return null;
+            }
+        }
+
         public async Task<Appointment> FindAppointment(ILogger log, CloudTable tblAppointment, Guid AppointmentID)
         {
             string pk = "p1";
