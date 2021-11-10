@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Azure.Cosmos.Table;
 using Microsoft.Extensions.Logging;
@@ -11,6 +13,25 @@ namespace Rasputin.TM {
             TableOperation operation = TableOperation.Insert(Appointment);
             await tblAppointment.ExecuteAsync(operation);
             return Appointment;
+        }
+
+        public async Task<Appointment[]> FindUserAppointments(ILogger log, CloudTable tblSlot, Guid userID)
+        {
+            log.LogInformation($"FindUserAppointments");
+            List<Appointment> result = new List<Appointment>();
+            TableQuery<Appointment> query = new TableQuery<Appointment>().Where(TableQuery.GenerateFilterCondition("UserID", QueryComparisons.Equal, userID.ToString()));
+            TableContinuationToken continuationToken = null;
+            try {
+                do {
+                var page = await tblSlot.ExecuteQuerySegmentedAsync(query, continuationToken);
+                continuationToken = page.ContinuationToken;
+                result.AddRange(page.Results);
+                } while(continuationToken != null);
+                return result.OrderBy(x => x.Timeslot).ToArray();
+            } catch(Exception ex) {
+                log.LogWarning(ex, "FindUserAppointments");
+                return null;
+            }
         }
 
         public async Task<Appointment> FindAppointment(ILogger log, CloudTable tblAppointment, Guid AppointmentID)

@@ -13,7 +13,7 @@ namespace Rasputin.TM{
             this.UserID = userID;
             this.SlotUserID = slotUserID;
         }
-        Appointment() { }
+        public Appointment() { }
         public DateTime? Timeslot { get; set; }
         public Guid? UserID { get; set; }
         public Guid? SlotUserID { get; set; }
