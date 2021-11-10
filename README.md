@@ -1,8 +1,8 @@
-# RasputinTMFaUserService
+# RasputinTMFaAppointmentService
 
-This service handles user related requests.
+This service handles appointment related requests.
 
 ## Api
 
-- api/CreateUser  (POST) { name, password, type } - Create user
-- api/GetUser?userID=id (GET) - Get by user id
+- api/CreateAppointment  (POST) { slotID, userID, serviceID } - Create appointment
+- api/GetAppointment?appointmentID=id (GET) - Get by appointment id
