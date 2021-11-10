@@ -5,9 +5,9 @@ using Microsoft.Extensions.Logging;
 
 namespace Rasputin.TM {
     public class AppointmentService {
-        public async Task<Appointment> InsertAppointment(ILogger log, CloudTable tblAppointment, DateTime scheduleTimestamp, Guid appointmentTypeID)
+        public async Task<Appointment> InsertAppointment(ILogger log, CloudTable tblAppointment, DateTime timeslot, Guid userID, Guid slotUserID, Guid serviceID)
         {
-            Appointment Appointment = new Appointment(scheduleTimestamp, appointmentTypeID);
+            Appointment Appointment = new Appointment(timeslot, userID, slotUserID, serviceID);
             TableOperation operation = TableOperation.Insert(Appointment);
             await tblAppointment.ExecuteAsync(operation);
             return Appointment;
