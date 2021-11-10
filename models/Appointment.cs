@@ -4,11 +4,11 @@ using Microsoft.Azure.Cosmos.Table;
 
 namespace Rasputin.TM{
     public class Appointment : TableEntity {
-        public Appointment(DateTime timslot, Guid userID, Guid slotUserID, Guid serviceID)
+        public Appointment(DateTime timeslot, Guid userID, Guid slotUserID, Guid serviceID)
         {
             this.PartitionKey = "p1";
             this.RowKey = Guid.NewGuid().ToString();
-            this.Timeslot = Timeslot;
+            this.Timeslot = timeslot;
             this.ServiceID = serviceID;
             this.UserID = userID;
             this.SlotUserID = slotUserID;
