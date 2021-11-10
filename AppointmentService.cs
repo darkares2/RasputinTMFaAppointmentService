@@ -15,15 +15,15 @@ namespace Rasputin.TM {
             return Appointment;
         }
 
-        public async Task<Appointment[]> FindUserAppointments(ILogger log, CloudTable tblSlot, Guid userID)
+        public async Task<Appointment[]> FindUserAppointments(ILogger log, CloudTable tblAppointment, Guid userID)
         {
-            log.LogInformation($"FindUserAppointments");
+            log.LogInformation($"FindUserAppointments by user {userID}");
             List<Appointment> result = new List<Appointment>();
-            TableQuery<Appointment> query = new TableQuery<Appointment>().Where(TableQuery.GenerateFilterCondition("UserID", QueryComparisons.Equal, userID.ToString()));
+            TableQuery<Appointment> query = new TableQuery<Appointment>().Where(TableQuery.GenerateFilterConditionForGuid("UserID", QueryComparisons.Equal, userID));
             TableContinuationToken continuationToken = null;
             try {
                 do {
-                var page = await tblSlot.ExecuteQuerySegmentedAsync(query, continuationToken);
+                var page = await tblAppointment.ExecuteQuerySegmentedAsync(query, continuationToken);
                 continuationToken = page.ContinuationToken;
                 result.AddRange(page.Results);
                 } while(continuationToken != null);
