@@ -24,7 +24,7 @@ namespace Rasputin.TM
             AppointmentCreateRequest data = (AppointmentCreateRequest)JsonConvert.DeserializeObject(requestBody, typeof(AppointmentCreateRequest));
             await appointmentFromSlotqueue.AddAsync(JsonConvert.SerializeObject(data));
             
-            return new OkObjectResult("");
+            return new OkObjectResult(JsonConvert.SerializeObject(data));
         }
     }
 }
