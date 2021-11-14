@@ -25,6 +25,14 @@ jobs:
         with:
           dotnet-version: ${{ env.DOTNET_VERSION }}
 
+      - name: 'Unittests'
+        shell: pwsh
+        run: |
+          pushd './${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}'
+          cd RasputinTMFaAppointmentServiceTests
+          dotnet test --verbosity normal
+          popd
+
       - name: 'Resolve Project Dependencies Using Dotnet'
         shell: pwsh
         run: |

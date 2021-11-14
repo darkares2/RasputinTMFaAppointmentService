@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31702.278
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RasputinTMFaAppointmentService", "RasputinTMFaAppointmentService.csproj", "{37DC7E77-13FE-4FB0-8637-E1D5448AAFC4}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RasputinTMFaAppointmentServiceTests", "RasputinTMFaAppointmentServiceTests\RasputinTMFaAppointmentServiceTests.csproj", "{2C12496E-DE16-47DA-BC56-DF0F5F495086}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{37DC7E77-13FE-4FB0-8637-E1D5448AAFC4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{37DC7E77-13FE-4FB0-8637-E1D5448AAFC4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{37DC7E77-13FE-4FB0-8637-E1D5448AAFC4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{37DC7E77-13FE-4FB0-8637-E1D5448AAFC4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2C12496E-DE16-47DA-BC56-DF0F5F495086}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2C12496E-DE16-47DA-BC56-DF0F5F495086}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2C12496E-DE16-47DA-BC56-DF0F5F495086}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2C12496E-DE16-47DA-BC56-DF0F5F495086}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {1A24BD9F-00C8-4DE6-9BFB-62EB520C457E}
+	EndGlobalSection
+EndGlobal
