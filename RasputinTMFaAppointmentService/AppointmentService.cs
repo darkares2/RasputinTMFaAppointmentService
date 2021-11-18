@@ -60,7 +60,8 @@ namespace Rasputin.TM {
             log.LogInformation($"FindAppointment: {pk},{rk}");
             TableOperation operation = TableOperation.Retrieve(pk, rk);
             try {
-                return (Appointment)await tblAppointment.ExecuteAsync(operation);
+                var tableResult = await tblAppointment.ExecuteAsync(operation);
+                return tableResult.Result as Appointment;
             } catch(Exception ex) {
                 log.LogWarning(ex, "FindAppointment", AppointmentID);
                 return null;
