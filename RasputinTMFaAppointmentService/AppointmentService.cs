@@ -61,7 +61,7 @@ namespace Rasputin.TM {
             TableOperation operation = TableOperation.Retrieve(pk, rk);
             try {
                 var tableResult = await tblAppointment.ExecuteAsync(operation);
-                return tableResult.Result as Appointment;
+                return tableResult.Result as Appointment != null ? tableResult.Result as Appointment : (Appointment)tableResult;
             } catch(Exception ex) {
                 log.LogWarning(ex, "FindAppointment", AppointmentID);
                 return null;

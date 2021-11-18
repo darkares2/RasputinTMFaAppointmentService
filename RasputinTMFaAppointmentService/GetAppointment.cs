@@ -32,11 +32,11 @@ namespace Rasputin.TM
                     responseMessage = JsonConvert.SerializeObject(appointments);                
                 } else {
                     Guid AppointmentID = Guid.Parse(req.Query["AppointmentID"].ToString());            
-                    Appointment Appointment = await new AppointmentService().FindAppointment(log, tblAppointment, AppointmentID);
-                    if (Appointment == null) {
+                    Appointment appointment = await new AppointmentService().FindAppointment(log, tblAppointment, AppointmentID);
+                    if (appointment == null) {
                         return new NotFoundResult();
                     }
-                    responseMessage = JsonConvert.SerializeObject(Appointment);
+                    responseMessage = JsonConvert.SerializeObject(appointment);
                 }
             }
 
