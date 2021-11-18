@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "RasputinTMFaAppointmentService": {
+      "commandName": "Project",
+      "commandLineArgs": "--port 7075"
+    }
+  }
+}

@@ -22,7 +22,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\RasputinTMFaAppointmentService.csproj" />
+    <ProjectReference Include="..\RasputinTMFaAppointmentService\RasputinTMFaAppointmentService.csproj" />
   </ItemGroup>
 
 </Project>

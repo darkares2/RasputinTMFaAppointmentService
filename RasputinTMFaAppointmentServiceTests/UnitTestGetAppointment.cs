@@ -30,45 +30,40 @@ namespace RasputinTMFaAppointmentServiceTests {
             reqMock.Setup(req => req.Query).Returns(new QueryCollection(query));
             var logger = Mock.Of<ILogger>();
             OkObjectResult result = (OkObjectResult)await GetAppointment.Run(reqMock.Object, null, logger);
+            Assert.Equal(200, result.StatusCode);
             Assert.Equal("null", result.Value);
         }
 
         [Fact]
         public async Task TestGetByUserID()
         {
+            // Arrange
+            var context = new DefaultHttpContext();
+            var request = context.Request;
             Guid userID = Guid.NewGuid();
-            var query = new Dictionary<String, StringValues>();
-            query.TryAdd("UserID", userID.ToString());
-            var reqMock = new Mock<HttpRequest>();
-            reqMock.Setup(req => req.Query).Returns(new QueryCollection(query));
-            var logger = Mock.Of<ILogger>();
-            var cloudTable = new Mock<CloudTable>(new Uri("http://localhost"), new StorageCredentials(accountName: "blah", keyValue: "blah"), (TableClientConfiguration)null);
-            var mockResult = new Mock<TableQuerySegment<DynamicTableEntity>>();
-            Appointment entry = new Appointment();
-            entry.RowKey = Guid.NewGuid().ToString();
-            entry.UserID = userID;
+            var qs = new Dictionary<string, StringValues>
+            {
+                { "UserID", userID.ToString() }
+            };
+            request.Query = new QueryCollection(qs);
 
-            List<Appointment> entries = new List<Appointment>();
-            entries.Add(entry);
-            var ctor = typeof(TableQuerySegment<Appointment>)
-                .GetConstructors(BindingFlags.Instance | BindingFlags.NonPublic)
-                .FirstOrDefault(c => c.GetParameters().Count() == 1);
+            var iLoggerMock = new Mock<ILogger>();
+            var tblAppointmentMock = new Mock<CloudTable>(new Uri("http://localhost"), new StorageCredentials(accountName: "blah", keyValue: "blah"), (TableClientConfiguration)null);
+            Appointment appointment1 = new Appointment() { RowKey = Guid.NewGuid().ToString(), UserID = userID,  ServiceID = Guid.NewGuid(), SlotUserID = Guid.NewGuid(), Timeslot = DateTime.Now };
+            Appointment appointment2 = new Appointment() { RowKey = Guid.NewGuid().ToString(), UserID = userID, ServiceID = Guid.NewGuid(), SlotUserID = Guid.NewGuid(), Timeslot = DateTime.Now.AddDays(10) };
+            List<Appointment> appointments = new List<Appointment>() { appointment1, appointment2 };
+            var resultMock = new Mock<TableQuerySegment<Appointment>>(appointments);
+            tblAppointmentMock.Setup(_ => _.ExecuteQuerySegmentedAsync(It.IsAny<TableQuery<Appointment>>(), It.IsAny<TableContinuationToken>())).ReturnsAsync(resultMock.Object);
 
-            var mockQuerySegment = ctor.Invoke(new object[] { new List<Appointment>(entries) }) as TableQuerySegment<Appointment>;
+            // Act
+            OkObjectResult result = (OkObjectResult)await GetAppointment.Run(request, tblAppointmentMock.Object, iLoggerMock.Object);
 
-
-            //MethodInfo setTokenMethod = typeof(TableQuerySegment<Appointment>).GetMethod("set_ContinuationToken", BindingFlags.NonPublic | BindingFlags.Instance);
-
-            //var continuationToken = new TableContinuationToken();
-            //setTokenMethod.Invoke(mockQuerySegment, new object[] { continuationToken });
-
-            cloudTable.Setup(t => t.ExecuteQuerySegmentedAsync(It.IsAny<TableQuery<Appointment>>(), It.IsAny<TableContinuationToken>()))
-                                .Returns(Task.FromResult(mockQuerySegment));
-
-            OkObjectResult result = (OkObjectResult)await GetAppointment.Run(reqMock.Object, cloudTable.Object, logger);
-            var converter = new ExpandoObjectConverter();
-            dynamic obj = JsonConvert.DeserializeObject<ExpandoObject[]>((string)result.Value, converter);
-            Assert.Equal(userID.ToString(), obj[0].UserID.ToString());
+            // Assert
+            Assert.Equal(200, result.StatusCode);
+            Appointment[] appointmentResult = (Appointment[])JsonConvert.DeserializeObject((string)result.Value, typeof(Appointment[]));
+            Assert.Equal(2, appointmentResult.Length);
+            Assert.Equal(appointment1.UserID, appointmentResult[0].UserID);
+            Assert.Equal(appointment2.UserID, appointmentResult[1].UserID);
         }
     }
 }

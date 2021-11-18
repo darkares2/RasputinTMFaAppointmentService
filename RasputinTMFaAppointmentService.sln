@@ -1,11 +1,17 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.31702.278
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RasputinTMFaAppointmentService", "RasputinTMFaAppointmentService.csproj", "{37DC7E77-13FE-4FB0-8637-E1D5448AAFC4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RasputinTMFaAppointmentService", "RasputinTMFaAppointmentService\RasputinTMFaAppointmentService.csproj", "{37DC7E77-13FE-4FB0-8637-E1D5448AAFC4}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RasputinTMFaAppointmentServiceTests", "RasputinTMFaAppointmentServiceTests\RasputinTMFaAppointmentServiceTests.csproj", "{2C12496E-DE16-47DA-BC56-DF0F5F495086}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{75AD94BF-DB76-46CB-AEB4-51A03A1F01FE}"
+	ProjectSection(SolutionItems) = preProject
+		.github\workflows\buildanddeploy.yaml = .github\workflows\buildanddeploy.yaml
+		README.md = README.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
