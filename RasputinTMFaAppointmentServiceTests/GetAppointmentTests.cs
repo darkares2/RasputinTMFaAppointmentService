@@ -48,8 +48,8 @@ namespace RasputinTMFaAppointmentServiceTests {
 
             var iLoggerMock = new Mock<ILogger>();
             var tblAppointmentMock = new Mock<CloudTable>(new Uri("http://localhost"), new StorageCredentials(accountName: "blah", keyValue: "blah"), (TableClientConfiguration)null);
-            Appointment appointment1 = new Appointment() { RowKey = Guid.NewGuid().ToString(), UserID = userID,  ServiceID = Guid.NewGuid(), SlotUserID = Guid.NewGuid(), Timeslot = DateTime.Now };
-            Appointment appointment2 = new Appointment() { RowKey = Guid.NewGuid().ToString(), UserID = userID, ServiceID = Guid.NewGuid(), SlotUserID = Guid.NewGuid(), Timeslot = DateTime.Now.AddDays(10) };
+            Appointment appointment1 = new Appointment() { RowKey = Guid.NewGuid().ToString(), UserID = userID,  ServiceID = Guid.NewGuid(), SlotUserID = Guid.NewGuid(), Timeslot = DateTime.Now, Open = true };
+            Appointment appointment2 = new Appointment() { RowKey = Guid.NewGuid().ToString(), UserID = userID, ServiceID = Guid.NewGuid(), SlotUserID = Guid.NewGuid(), Timeslot = DateTime.Now.AddDays(10), Open = true };
             List<Appointment> appointments = new List<Appointment>() { appointment1, appointment2 };
             var resultMock = new Mock<TableQuerySegment<Appointment>>(appointments);
             tblAppointmentMock.Setup(_ => _.ExecuteQuerySegmentedAsync(It.IsAny<TableQuery<Appointment>>(), It.IsAny<TableContinuationToken>())).ReturnsAsync(resultMock.Object);
@@ -80,8 +80,8 @@ namespace RasputinTMFaAppointmentServiceTests {
 
             var iLoggerMock = new Mock<ILogger>();
             var tblAppointmentMock = new Mock<CloudTable>(new Uri("http://localhost"), new StorageCredentials(accountName: "blah", keyValue: "blah"), (TableClientConfiguration)null);
-            Appointment appointment1 = new Appointment() { RowKey = Guid.NewGuid().ToString(), UserID = Guid.NewGuid(), ServiceID = Guid.NewGuid(), SlotUserID = slotUserID, Timeslot = DateTime.Now };
-            Appointment appointment2 = new Appointment() { RowKey = Guid.NewGuid().ToString(), UserID = Guid.NewGuid(), ServiceID = Guid.NewGuid(), SlotUserID = slotUserID, Timeslot = DateTime.Now.AddDays(10) };
+            Appointment appointment1 = new Appointment() { RowKey = Guid.NewGuid().ToString(), UserID = Guid.NewGuid(), ServiceID = Guid.NewGuid(), SlotUserID = slotUserID, Timeslot = DateTime.Now, Open = true };
+            Appointment appointment2 = new Appointment() { RowKey = Guid.NewGuid().ToString(), UserID = Guid.NewGuid(), ServiceID = Guid.NewGuid(), SlotUserID = slotUserID, Timeslot = DateTime.Now.AddDays(10), Open = true };
             List<Appointment> appointments = new List<Appointment>() { appointment1, appointment2 };
             var resultMock = new Mock<TableQuerySegment<Appointment>>(appointments);
             tblAppointmentMock.Setup(_ => _.ExecuteQuerySegmentedAsync(It.IsAny<TableQuery<Appointment>>(), It.IsAny<TableContinuationToken>())).ReturnsAsync(resultMock.Object);
@@ -112,7 +112,7 @@ namespace RasputinTMFaAppointmentServiceTests {
 
             var iLoggerMock = new Mock<ILogger>();
             var tblAppointmentMock = new Mock<CloudTable>(new Uri("http://localhost"), new StorageCredentials(accountName: "blah", keyValue: "blah"), (TableClientConfiguration)null);
-            Appointment appointment2 = new Appointment() { RowKey = appointmentID.ToString(), UserID = Guid.NewGuid(), ServiceID = Guid.NewGuid(), SlotUserID = Guid.NewGuid(), Timeslot = DateTime.Now.AddDays(10) };
+            Appointment appointment2 = new Appointment() { RowKey = appointmentID.ToString(), UserID = Guid.NewGuid(), ServiceID = Guid.NewGuid(), SlotUserID = Guid.NewGuid(), Timeslot = DateTime.Now.AddDays(10), Open = true };
             List<Appointment> appointments = new List<Appointment>() { appointment2 };
             TableResult tableResult = new TableResult();
             tableResult.Result = appointment2;

@@ -15,7 +15,7 @@ namespace Rasputin.TM {
             return appointment;
         }
 
-        public async Task<Appointment[]> FindUserAppointments(ILogger log, CloudTable tblAppointment, Guid userID)
+        public async Task<Appointment[]> FindUserAppointments(ILogger log, CloudTable tblAppointment, Guid userID, bool open)
         {
             log.LogInformation($"FindUserAppointments by user {userID}");
             List<Appointment> result = new List<Appointment>();
@@ -27,7 +27,7 @@ namespace Rasputin.TM {
                 continuationToken = page.ContinuationToken;
                 result.AddRange(page.Results);
                 } while(continuationToken != null);
-                return result.OrderBy(x => x.Timeslot).ToArray();
+                return result.Where(x => x.Open == open).OrderBy(x => x.Timeslot).ToArray();
             } catch(Exception ex) {
                 log.LogWarning(ex, "FindUserAppointments");
                 return null;
@@ -43,7 +43,7 @@ namespace Rasputin.TM {
             return appointment;
         }
 
-        public async Task<Appointment[]> FindSlotUserAppointments(ILogger log, CloudTable tblAppointment, Guid slotUserID)
+        public async Task<Appointment[]> FindSlotUserAppointments(ILogger log, CloudTable tblAppointment, Guid slotUserID, bool open)
         {
             log.LogInformation($"FindUserAppointments by user {slotUserID}");
             List<Appointment> result = new List<Appointment>();
@@ -55,7 +55,7 @@ namespace Rasputin.TM {
                 continuationToken = page.ContinuationToken;
                 result.AddRange(page.Results);
                 } while(continuationToken != null);
-                return result.OrderBy(x => x.Timeslot).ToArray();
+                return result.Where(x => x.Open == open).OrderBy(x => x.Timeslot).ToArray();
             } catch(Exception ex) {
                 log.LogWarning(ex, "FindSlotUserAppointments");
                 return null;
