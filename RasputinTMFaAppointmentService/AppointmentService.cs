@@ -9,10 +9,10 @@ namespace Rasputin.TM {
     public class AppointmentService {
         public async Task<Appointment> InsertAppointment(ILogger log, CloudTable tblAppointment, DateTime timeslot, Guid userID, Guid slotUserID, Guid serviceID)
         {
-            Appointment Appointment = new Appointment(timeslot, userID, slotUserID, serviceID);
-            TableOperation operation = TableOperation.Insert(Appointment);
+            Appointment appointment = new Appointment(timeslot, userID, slotUserID, serviceID);
+            TableOperation operation = TableOperation.Insert(appointment);
             await tblAppointment.ExecuteAsync(operation);
-            return Appointment;
+            return appointment;
         }
 
         public async Task<Appointment[]> FindUserAppointments(ILogger log, CloudTable tblAppointment, Guid userID)
@@ -32,6 +32,15 @@ namespace Rasputin.TM {
                 log.LogWarning(ex, "FindUserAppointments");
                 return null;
             }
+        }
+
+        public async Task<Appointment> CloseAppointment(ILogger log, CloudTable tblAppointment, Guid appointmentID)
+        {
+            Appointment appointment = await FindAppointment(log, tblAppointment, appointmentID);
+            appointment.Open = false;
+            TableOperation operation = TableOperation.Replace(appointment);
+            await tblAppointment.ExecuteAsync(operation);
+            return appointment;
         }
 
         public async Task<Appointment[]> FindSlotUserAppointments(ILogger log, CloudTable tblAppointment, Guid slotUserID)
